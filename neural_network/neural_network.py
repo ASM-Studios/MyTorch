@@ -1,17 +1,14 @@
 from neural_network import layer, activation
 import numpy as np
 import random
-import tqdm
 import time
+import pickle
 
 class NeuralNetwork:
-    def __init__(self, loss: callable, loss_prime: callable) -> None:
+    def __init__(self) -> None:
         self.__layers = []
-        self.__loss = loss
-        self.__loss_prime = loss_prime
-
-    def add(self, layer: layer.Layer):
-        self.__layers.append(layer)
+        self.__loss = None
+        self.__loss_prime = None
 
     def __forward(self, input: list):
         output = input
@@ -19,10 +16,23 @@ class NeuralNetwork:
             output = layer.forward(output)
         return output
 
-    def train(self, inputs: list, epochs: int, batch_size: int = 16):
+    def get_layers(self):
+        return self.__layers
+
+    def add_layer(self, layer: layer.Layer):
+        self.__layers.append(layer)
+
+    def set_loss_functions(self, loss: callable, loss_prime: callable) -> None:
+        self.__loss = loss
+        self.__loss_prime = loss_prime
+
+    def train(self, x_train, y_train, epochs: int, batch_size: int = 16):
+        if (self.__loss == None or self.__loss_prime == None):
+            raise NotImplementedError
+
         x_train = np.array([[[0,0]], [[0,1]], [[1,0]], [[1,1]]])
         y_train = np.array([[[0]], [[1]], [[1]], [[0]]])
-        for _ in tqdm.tqdm(range(epochs)):
+        for _ in range(epochs):
             index = random.randint(0, 3)
             output = x_train[index]
             
@@ -38,6 +48,7 @@ class NeuralNetwork:
         return self.__forward(inputs)
 
     def save(self, filename: str):
+        pickle.dump(self, open(filename, 'wb'))
         return 0
 
     def restore(self, filename: str):
