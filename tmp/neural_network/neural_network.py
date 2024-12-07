@@ -20,13 +20,17 @@ class NeuralNetwork:
         return output
 
     def train(self, inputs: list, epochs: int, batch_size: int = 16):
+        x_train = np.array([[[0,0]], [[0,1]], [[1,0]], [[1,1]]])
+        y_train = np.array([[[0]], [[1]], [[1]], [[0]]])
         for _ in tqdm.tqdm(range(epochs)):
-            input, expected_output = random.choice(inputs)
-            predict = self.__forward(input)
-            error = self.__loss_prime(expected_output, predict)
-            print(error)
+            index = random.randint(0, 3)
+            output = x_train[index]
+            
+            output = self.__forward(output)
+            error = self.__loss_prime(y_train[index], output)
+
             for i, layer in enumerate(reversed(self.__layers)):
-                error = layer.backward(error, 0.01)
+                error = layer.backward(error, 0.1)
         return 0
 
     def predict(self, input: set):

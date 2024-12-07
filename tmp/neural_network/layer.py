@@ -17,8 +17,8 @@ class Layer:
 
 class FCLayer(Layer):
     def __init__(self, input_size: int, size: int):
-        self.weights = np.random.rand(input_size, size)
-        self.biases = np.random.rand(size)
+        self.weights = np.random.rand(input_size, size) 
+        self.biases = np.random.rand(1, size) 
 
     def forward(self, input):
         self.input = input
@@ -27,7 +27,6 @@ class FCLayer(Layer):
 
     def backward(self, output_error, lr):
         input_error = np.dot(output_error, self.weights.T)
-        print('>', self.input.T, output_error)
         weights_error = np.dot(self.input.T, output_error)
 
         self.weights -= lr * weights_error
