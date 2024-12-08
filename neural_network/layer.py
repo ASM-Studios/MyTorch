@@ -1,8 +1,6 @@
 import random
 import numpy as np
-
-def nothing(input: float) -> float:
-    return input
+from neural_network import activation, loss, optimizer
 
 class Layer:
     def __init__(self):
@@ -10,27 +8,30 @@ class Layer:
         self.output = None
 
     def forward(self, input):
-        return
+        raise NotImplementedError
 
-    def backward(self, output_error, lr):
-        return
+    def backward(self, output_error):
+        raise NotImplementedError
 
 class FCLayer(Layer):
     def __init__(self, input_size: int, size: int):
         self.weights = np.random.rand(input_size, size)
         self.biases = np.random.rand(1, size)
+        self.optimizer = optimizer.SGDOptimizer(0.1)
 
     def forward(self, input):
         self.input = input
         self.output = np.dot(self.input, self.weights) + self.biases
         return self.output
 
-    def backward(self, output_error, lr):
+    def backward(self, output_error):
         input_error = np.dot(output_error, self.weights.T)
         weights_error = np.dot(self.input.T, output_error)
 
-        self.weights -= lr * weights_error
-        self.biases -= lr * output_error
+        #self.weights = self.optimizer.update(self.weights, weights_error)
+        #self.biases = self.optimizer.update(self.biases, output_error)
+        self.weights -= 0.1 * weights_error
+        self.biases -= 0.1 * np.sum(output_error, axis=0, keepdims=True)
         return input_error
 
 class ActivationLayer(Layer):
@@ -43,5 +44,5 @@ class ActivationLayer(Layer):
         self.output = self.activation(input)
         return self.output
 
-    def backward(self, output_error, lr):
+    def backward(self, output_error):
         return self.activation_prime(self.input) * output_error

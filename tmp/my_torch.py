@@ -10,7 +10,7 @@ def mse(y_true, y_pred):
     return np.mean(np.power(y_true - y_pred, 2));
 
 def mse_prime(y_true, y_pred):
-    return 2 * (y_pred - y_true) / 1;
+    return 2 * (y_pred - y_true) / len(y_true)
 
 def cross_entropy_loss(results: list):
     loss = 0
@@ -40,9 +40,9 @@ if __name__ == '__main__':
 
     datas = [generate_train() for i in range(1000)]
     nn = neural_network.NeuralNetwork(mse, mse_prime)
-    nn.add(neural_network.layer.FCLayer(2, 3))
+    nn.add(neural_network.layer.FCLayer(2, 5))
     nn.add(neural_network.layer.ActivationLayer(activation.tanh, activation.tanh_prime))
-    nn.add(neural_network.layer.FCLayer(3, 1))
+    nn.add(neural_network.layer.FCLayer(5, 5))
     nn.add(neural_network.layer.ActivationLayer(activation.tanh, activation.tanh_prime))
 
     nn.train(datas, 1000)

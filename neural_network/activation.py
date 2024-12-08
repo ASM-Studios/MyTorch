@@ -1,15 +1,44 @@
 import numpy as np
+import sys
 
-def relu(input: float) -> float:
-    return input if input > 0 else 0
+"""def function_softmax(inputs) -> float:
+    exp_values = np.exp(inputs - np.max(inputs))
+    return exp_values / np.sum(exp_values)
 
-def heaviside_function(input: float) -> int:
-    return 1 if input > 0 else 0
+def function_softmax_prime(inputs) -> float:
+    return inputs
 
-def function_sigmoid(input: float) -> float:
+softmax = {
+    "function": function_softmax,
+    "prime": function_softmax_prime
+}"""
+
+def function_linear(input) -> float:
+    return input
+
+def function_linear_prime(input) -> float:
+    return 1
+
+linear = {
+    "function": function_linear,
+    "prime": function_linear_prime
+}
+
+def function_relu(inputs) -> float:
+    return np.maximum(0, inputs)
+
+def function_relu_prime(inputs) -> float:
+    return np.where(inputs <= 0, 0, 1)
+
+relu = {
+    "function": function_relu,
+    "prime": function_relu_prime
+}
+
+def function_sigmoid(input) -> float:
     return 1 / (1 + np.exp(-input))
 
-def function_sigmoid_prime(input: float) -> float:
+def function_sigmoid_prime(input) -> float:
     return function_sigmoid(input) * (1 - function_sigmoid(input))
 
 sigmoid = {
@@ -17,10 +46,10 @@ sigmoid = {
     "prime": function_sigmoid_prime
 }
 
-def function_tanh(input: float) -> float:
+def function_tanh(input) -> float:
     return np.tanh(input)
 
-def tanh_prime(input: float) -> float:
+def tanh_prime(input) -> float:
     return 1 - np.tanh(input) ** 2
 
 tanh = {
@@ -30,5 +59,8 @@ tanh = {
 
 activation_functions = {
     "sigmoid": sigmoid,
-    "tanh": tanh
+    "tanh": tanh,
+    "relu": relu,
+    "linear": linear,
+    #"softmax": softmax
 }

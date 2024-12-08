@@ -28,9 +28,12 @@ class NeuralNetwork:
             
             output = self.__forward(output)
             error = self.__loss_prime(y_train[index], output)
-
+            
+            print(len(error))
+            print(len(self.__layers))
             for i, layer in enumerate(reversed(self.__layers)):
                 error = layer.backward(error, 0.1)
+                print('>', len(error), error)
         return 0
 
     def predict(self, input: set):
