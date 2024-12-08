@@ -51,5 +51,7 @@ class NeuralNetwork:
         pickle.dump(self, open(filename, 'wb'))
         return 0
 
-    def restore(self, filename: str):
-        return 0
+    @staticmethod
+    def restore(filename: str):
+        return pickle.load(open(filename, 'rb'))
+
