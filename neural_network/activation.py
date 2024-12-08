@@ -11,11 +11,16 @@ linear = {
     "prime": function_linear_prime
 }
 
-def function_relu(input: float) -> float:
-    return input if input > 0 else 0
+def function_relu(inputs: float) -> float:
+    for i, input in enumerate(inputs):
+        if input < 0:
+            inputs[i] = 0
+    return inputs
 
-def function_relu_prime(input: float) -> float:
-    return 1 if input > 0 else 0
+def function_relu_prime(inputs: float) -> float:
+    for i, input in enumerate(inputs):
+        inputs[i] = 1 if input > 0 else 0
+    return inputs
 
 relu = {
     "function": function_relu,

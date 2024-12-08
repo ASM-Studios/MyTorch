@@ -59,6 +59,13 @@ pieces = {
     'k': 11
 }
 
+result = {
+    'Check': 0,
+    'Checkmate': 1,
+    'Nothing': 2,
+    'Stalemate': 3
+}
+
 def get_plate(plate: str) -> np.ndarray:
     matrix = np.zeros((12, 8, 8), dtype=int)
     x = 0
@@ -75,7 +82,7 @@ def get_plate(plate: str) -> np.ndarray:
     return matrix
 
 def get_castling(castling_config: str) -> np.ndarray:
-    castling = np.ndarray(4, dtype = int)
+    castling = np.zeros(4, dtype = int)
     if (castling_config == '-'):
         return castling
     castling[0] = 1 if 'K' in castling_config else 0
@@ -85,7 +92,7 @@ def get_castling(castling_config: str) -> np.ndarray:
     return castling
 
 def get_en_passant(en_passant_config: str) -> np.ndarray:
-    en_passant = np.ndarray((8, 8), dtype = int)
+    en_passant = np.zeros((8, 8), dtype = int)
     if (en_passant_config == '-'):
         return en_passant
     x = ord(en_passant_config[0]) - ord('a')
@@ -95,28 +102,31 @@ def get_en_passant(en_passant_config: str) -> np.ndarray:
 
 def get_input(chess_config: str) -> np.ndarray:
     chess_config = chess_config.split(' ')
-    matrix_size = 12 * 8 * 8
-    matrix = np.zeros(matrix_size, dtype=int)
-    plate = get_plate(chess_config[0]).flatten()
-    matrix += plate
+    matrix = get_plate(chess_config[0]).flatten()
     matrix = np.append(matrix, 1 if chess_config[1] == 'w' else 0)
     matrix = np.append(matrix, get_castling(chess_config[2]))
     matrix = np.append(matrix, get_en_passant(chess_config[3]))
     matrix = np.append(matrix, int(chess_config[4]))
     matrix = np.append(matrix, int(chess_config[5]))
-    print(matrix.shape)
     return matrix
+
+def get_output(chess_config: str) -> np.ndarray:
+    y = np.zeros(4, dtype=int)
+    y[result[chess_config.split(' ')[6]]] = 1
+    return y
 
 def train(config: Config, nn: neural_network.NeuralNetwork):
     with open(config.cb_file, 'r') as f:
         data = f.read()
     data = data.split('\n')
-    for chess_config in data:
+    x_train = []
+    y_train = []
+    for i, chess_config in enumerate(data):
         if (chess_config == ''):
             continue
-        print('>', chess_config.split(' ')[0])
-        matrix = get_input(chess_config)
-        return
+        x_train.append(get_input(chess_config))
+        y_train.append(get_output(chess_config))
+    nn.train(x_train, y_train, 50)
     return
 
 def save(config: Config, nn: neural_network.NeuralNetwork):

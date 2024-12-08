@@ -22,12 +22,16 @@ class FCLayer(Layer):
 
     def forward(self, input):
         self.input = input
-        self.output = np.dot(self.input, self.weights) + self.biases
+        self.output = (np.dot(self.input, self.weights) + self.biases)[0]
         return self.output
 
     def backward(self, output_error, lr):
         input_error = np.dot(output_error, self.weights.T)
+        print(self.input.T)
+        print(output_error)
+        print('KO')
         weights_error = np.dot(self.input.T, output_error)
+        print('OK')
 
         self.weights -= lr * weights_error
         self.biases -= lr * output_error

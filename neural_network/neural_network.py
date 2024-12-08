@@ -30,14 +30,11 @@ class NeuralNetwork:
         if (self.__loss == None or self.__loss_prime == None):
             raise NotImplementedError
 
-        x_train = np.array([[[0,0]], [[0,1]], [[1,0]], [[1,1]]])
-        y_train = np.array([[[0]], [[1]], [[1]], [[0]]])
-        for _ in range(epochs):
-            index = random.randint(0, 3)
-            output = x_train[index]
-            
+        for i in range(len(x_train)):
+            output = x_train[i]
             output = self.__forward(output)
-            error = self.__loss_prime(y_train[index], output)
+            
+            error = self.__loss_prime(y_train[i], output)
 
             for i, layer in enumerate(reversed(self.__layers)):
                 error = layer.backward(error, 0.1)
@@ -49,7 +46,7 @@ class NeuralNetwork:
 
     def save(self, filename: str):
         pickle.dump(self, open(filename, 'wb'))
-        return 0
+        return
 
     @staticmethod
     def restore(filename: str):
