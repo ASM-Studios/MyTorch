@@ -1,10 +1,26 @@
 import numpy as np
 
-def relu(input: float) -> float:
+def function_linear(input: float) -> float:
+    return input
+
+def function_linear_prime(input: float) -> float:
+    return 1
+
+linear = {
+    "function": function_linear,
+    "prime": function_linear_prime
+}
+
+def function_relu(input: float) -> float:
     return input if input > 0 else 0
 
-def heaviside_function(input: float) -> int:
+def function_relu_prime(input: float) -> float:
     return 1 if input > 0 else 0
+
+relu = {
+    "function": function_relu,
+    "prime": function_relu_prime
+}
 
 def function_sigmoid(input: float) -> float:
     return 1 / (1 + np.exp(-input))
@@ -30,5 +46,7 @@ tanh = {
 
 activation_functions = {
     "sigmoid": sigmoid,
-    "tanh": tanh
+    "tanh": tanh,
+    "relu": relu,
+    "linear": linear
 }
