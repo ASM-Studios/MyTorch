@@ -7,11 +7,11 @@ from neural_network.activation import activation_functions
 from neural_network.loss import loss_functions
 
 def load_layer(data: json, nn: neural_network.NeuralNetwork) -> None:
-    if (data['type'] == None):
+    if data['type'] is None:
         print('Layer type not specified')
         sys.exit(84)
-    if (data['type'] == 'activation'):
-        if (data.get('activation') == None):
+    if data['type'] == 'activation':
+        if data.get('activation') is None:
             print('Invalid layer parameters')
             sys.exit(84)
         try:
@@ -22,8 +22,8 @@ def load_layer(data: json, nn: neural_network.NeuralNetwork) -> None:
             print(f'Activation function "{data['activation']}" does not exist')
             print(f'List of activation function: {list(activation_functions.keys())}')
             sys.exit(84)
-    elif (data['type'] == 'fully_connected'):
-        if (data.get('input_size') == None or data.get('output_size') == None):
+    elif data['type'] == 'fully_connected':
+        if data.get('input_size') is None or data.get('output_size') is None:
             print('Invalid layer parameters')
             sys.exit(84)
         try:
@@ -39,7 +39,7 @@ def load_layer(data: json, nn: neural_network.NeuralNetwork) -> None:
 
 def load_base(data: json) -> neural_network.NeuralNetwork:
     nn = neural_network.NeuralNetwork()
-    if (data.get('loss') == None):
+    if data.get('loss') is None:
         print('Loss function not specified')
         sys.exit(84)
     try:

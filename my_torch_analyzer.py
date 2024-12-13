@@ -107,8 +107,6 @@ def get_input(chess_config: str) -> np.ndarray:
     matrix = np.append(matrix, 1 if chess_config[1] == 'w' else 0)
     matrix = np.append(matrix, get_castling(chess_config[2]))
     matrix = np.append(matrix, get_en_passant(chess_config[3]))
-    #matrix = np.append(matrix, int(chess_config[4]))
-    #matrix = np.append(matrix, int(chess_config[5]))
     return np.array([matrix], dtype=float)
 
 def get_output(chess_config: str) -> np.ndarray:

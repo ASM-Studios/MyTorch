@@ -1,18 +1,6 @@
 import numpy as np
 import sys
 
-def function_softmax(inputs) -> float:
-    exp_values = np.exp(inputs - np.max(inputs))
-    return exp_values / np.sum(exp_values)
-
-"""def function_softmax_prime(inputs) -> float:
-    return inputs
-
-softmax = {
-    "function": function_softmax,
-    "prime": function_softmax_prime
-}"""
-
 def function_linear(input) -> float:
     return input
 

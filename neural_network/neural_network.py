@@ -33,7 +33,7 @@ class NeuralNetwork:
             error = layer.backward(error, learning_rate)"""
 
     def train(self, x_train, y_train, epochs: int, batch_size: int = 16):
-        if (self.__loss == None or self.__loss_prime == None):
+        if self.__loss is None or self.__loss_prime is None:
             raise NotImplementedError
 
         for epoch in tqdm.tqdm(range(epochs)):
@@ -52,18 +52,12 @@ class NeuralNetwork:
             loss = np.mean(loss)
             tqdm.tqdm.write(f'Epoch: {epoch}, Loss: {loss}')
 
-
-
-        return 0
-
     def predict(self, input: set):
         return self.__forward(input)
 
     def save(self, filename: str):
         pickle.dump(self, open(filename, 'wb'))
-        return
 
     @staticmethod
     def restore(filename: str):
         return pickle.load(open(filename, 'rb'))
-
