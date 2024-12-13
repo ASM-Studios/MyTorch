@@ -12,29 +12,28 @@ class Config:
         self.mode = 0
 
     def set_mode(self, mode):
-        if (self.mode != 0):
+        if self.mode != 0:
             print('Mode cannot be combined')
             sys.exit(84)
-        if (mode == '--predict'):
+        if mode == '--predict':
             self.mode = 1
-        elif (mode == '--train'):
+        elif mode == '--train':
             self.mode = 2
         else:
             print('Invalid mode')
             sys.exit(84)
 
     def set_nn_savefile(self, file):
-        if (self.mode == 1):
+        if self.mode == 1:
             print('Incompatible argument (save and predict)')
             sys.exit(84)
         self.nn_savefile = file
-        return
 
     def parse(self):
         try:
             self.set_mode(sys.argv[1])
             offset = 0
-            if (sys.argv[2] == '--save'):
+            if sys.argv[2] == '--save':
                 self.set_nn_savefile(sys.argv[3])
                 offset += 2
             self.nn_file = sys.argv[2 + offset]
@@ -42,7 +41,6 @@ class Config:
         except IndexError:
             print('Bad arguments')
             sys.exit(84)
-        return
 
 pieces = {
     'P': 0,
@@ -135,20 +133,18 @@ def train(config: Config, nn: neural_network.NeuralNetwork):
     print(y_train[20])
     print(nn.predict(x_train[30]))
     print(y_train[30])
-    return
 
 def save(config: Config, nn: neural_network.NeuralNetwork):
-    if (config.nn_savefile == None):
+    if config.nn_savefile is None:
         nn.save(config.nn_file)
     else:
         nn.save(config.nn_savefile)
-    
+
 def execute(config: Config, nn: neural_network.NeuralNetwork):
-    if (config.mode == 1):
+    if config.mode == 1:
         pass
     elif config.mode == 2:
         train(config, nn)
-    return
 
 if __name__ == '__main__':
     config = Config()
@@ -159,5 +155,5 @@ if __name__ == '__main__':
         print(f'File is invalid: {config.nn_file}')
         sys.exit(84)
     execute(config, nn)
-    #save(config, nn)
+    save(config, nn)
     sys.exit(0)
