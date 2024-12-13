@@ -70,12 +70,12 @@ def get_plate(plate: str) -> np.ndarray:
     matrix = np.zeros((12, 8, 8), dtype=int)
     x = 0
     y = 0
-    for i, character in enumerate(plate):
-        if (character == '/'):
+    for character in plate:
+        if character == '/':
             y += 1
             x = 0
             continue
-        if (character.isdigit()):
+        if character.isdigit():
             x += int(character)
             continue
         matrix[pieces[character]][y][x] = 1
@@ -84,7 +84,7 @@ def get_plate(plate: str) -> np.ndarray:
 
 def get_castling(castling_config: str) -> np.ndarray:
     castling = np.zeros(4, dtype = int)
-    if (castling_config == '-'):
+    if castling_config == '-':
         return castling
     castling[0] = 1 if 'K' in castling_config else 0
     castling[1] = 1 if 'Q' in castling_config else 0
@@ -94,7 +94,7 @@ def get_castling(castling_config: str) -> np.ndarray:
 
 def get_en_passant(en_passant_config: str) -> np.ndarray:
     en_passant = np.zeros((8, 8), dtype = int)
-    if (en_passant_config == '-'):
+    if en_passant_config == '-':
         return en_passant
     x = ord(en_passant_config[0]) - ord('a')
     y = int(en_passant_config[1]) - 1
@@ -107,8 +107,8 @@ def get_input(chess_config: str) -> np.ndarray:
     matrix = np.append(matrix, 1 if chess_config[1] == 'w' else 0)
     matrix = np.append(matrix, get_castling(chess_config[2]))
     matrix = np.append(matrix, get_en_passant(chess_config[3]))
-    matrix = np.append(matrix, int(chess_config[4]))
-    matrix = np.append(matrix, int(chess_config[5]))
+    #matrix = np.append(matrix, int(chess_config[4]))
+    #matrix = np.append(matrix, int(chess_config[5]))
     return np.array([matrix], dtype=float)
 
 def get_output(chess_config: str) -> np.ndarray:
@@ -122,8 +122,8 @@ def train(config: Config, nn: neural_network.NeuralNetwork):
     data = data.split('\n')
     x_train = []
     y_train = []
-    for i, chess_config in enumerate(data):
-        if (chess_config == ''):
+    for chess_config in data:
+        if chess_config == '':
             continue
         x_train.append(get_input(chess_config))
         y_train.append(get_output(chess_config))

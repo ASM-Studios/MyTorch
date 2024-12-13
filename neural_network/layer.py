@@ -15,8 +15,8 @@ class Layer:
 
 class FCLayer(Layer):
     def __init__(self, input_size: int, size: int):
-        self.weights = np.random.rand(input_size, size)
-        self.biases = np.random.rand(1, size)
+        self.weights = np.random.rand(input_size, size) * np.sqrt(2. / input_size)
+        self.biases = np.zeros((1, size))
         self.optimizer = optimizer.SGDOptimizer(0.1)
 
     def forward(self, input):
@@ -30,8 +30,8 @@ class FCLayer(Layer):
 
         #self.weights = self.optimizer.update(self.weights, weights_error)
         #self.biases = self.optimizer.update(self.biases, output_error)
-        self.weights -= 0.1 * weights_error
-        self.biases -= 0.1 * np.sum(output_error, axis=0, keepdims=True)
+        self.weights -= 0.01 * weights_error
+        self.biases -= 0.01 * np.sum(output_error, axis=0, keepdims=True)
         return input_error
 
 class ActivationLayer(Layer):
