@@ -73,7 +73,6 @@ def load_nn_conf(file: str, nb: int) -> None:
         file = file.split('.')[0]
         nn.save(f'{file}_{i + 1}.nn')
 
-
 if __name__ == '__main__':
     for i in range(1, len(sys.argv), 2):
         try:

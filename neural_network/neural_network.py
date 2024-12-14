@@ -56,8 +56,10 @@ class NeuralNetwork:
         return self.__forward(input)
 
     def save(self, filename: str):
-        pickle.dump(self, open(filename, 'wb'))
+        with open(filename, 'wb') as f:
+            pickle.dump(self, f)
 
     @staticmethod
     def restore(filename: str):
-        return pickle.load(open(filename, 'rb'))
+        with open(filename, 'rb') as f:
+            return pickle.load(f)

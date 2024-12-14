@@ -152,8 +152,9 @@ if __name__ == '__main__':
     try:
         nn = neural_network.NeuralNetwork.restore(config.nn_file)
     except FileNotFoundError:
-        print(f'File is invalid: {config.nn_file}')
+        print(f'Invalid file {config.nn_file}')
         sys.exit(84)
-    execute(config, nn)
-    save(config, nn)
+    #execute(config, nn)
+    if config.mode == 2:
+        save(config, nn)
     sys.exit(0)
