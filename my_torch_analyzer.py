@@ -108,7 +108,7 @@ def get_input(chess_config: str) -> np.ndarray:
     return np.array([matrix], dtype=float)
 
 def get_output(chess_config: str) -> np.ndarray:
-    y = np.zeros(2, dtype=float)
+    y = np.zeros(4, dtype=float)
     y[result[chess_config.split(' ')[6]]] = 1
     return np.array([y], dtype=float)
 
@@ -123,19 +123,29 @@ def train(config: Config, nn: neural_network.NeuralNetwork):
             continue
         x_train.append(get_input(chess_config))
         y_train.append(get_output(chess_config))
-    nn.train(x_train, y_train, 25, 16)
+    nn.train(x_train, y_train, 25, 1)
+
+def predict(config: Config, nn:neural_network.NeuralNetwork):
+    with open(config.cb_file, 'r') as f:
+        data = f.read()
+    data = data.split('\n')
+    for chess_config in data:
+        if chess_config == '':
+            continue
+        index = np.argmax(nn.predict(get_input(chess_config)))
+        print(list(result.keys())[index])
+
+def execute(config: Config, nn: neural_network.NeuralNetwork):
+    if config.mode == 1:
+        predict(config, nn)
+    elif config.mode == 2:
+        train(config, nn)
 
 def save(config: Config, nn: neural_network.NeuralNetwork):
     if config.nn_savefile is None:
         nn.save(config.nn_file)
     else:
         nn.save(config.nn_savefile)
-
-def execute(config: Config, nn: neural_network.NeuralNetwork):
-    if config.mode == 1:
-        pass
-    elif config.mode == 2:
-        train(config, nn)
 
 if __name__ == '__main__':
     config = Config()
