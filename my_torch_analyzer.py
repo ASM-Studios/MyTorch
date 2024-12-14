@@ -123,16 +123,7 @@ def train(config: Config, nn: neural_network.NeuralNetwork):
             continue
         x_train.append(get_input(chess_config))
         y_train.append(get_output(chess_config))
-
-    nn.train(x_train, y_train, 25)
-    print(nn.predict(x_train[0]))
-    print(y_train[0])
-    print(nn.predict(x_train[10]))
-    print(y_train[10])
-    print(nn.predict(x_train[20]))
-    print(y_train[20])
-    print(nn.predict(x_train[30]))
-    print(y_train[30])
+    nn.train(x_train, y_train, 25, 16)
 
 def save(config: Config, nn: neural_network.NeuralNetwork):
     if config.nn_savefile is None:
@@ -154,7 +145,7 @@ if __name__ == '__main__':
     except FileNotFoundError:
         print(f'Invalid file {config.nn_file}')
         sys.exit(84)
-    #execute(config, nn)
+    execute(config, nn)
     if config.mode == 2:
         save(config, nn)
     sys.exit(0)

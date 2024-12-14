@@ -26,11 +26,14 @@ class NeuralNetwork:
         self.__loss = loss
         self.__loss_prime = loss_prime
 
-    """def __train_batch(self, x_batch, y_batch, learning_rate):
-        output = self.__forward(x_batch)
-        error = self.__loss_prime(y_batch, output)
-        for i, layer in enumerate(reversed(self.__layers)):
-            error = layer.backward(error, learning_rate)"""
+    def __train_batch(self, x_batch, y_batch, learning_rate):
+        errors = []
+        for i, _ in enumerate(x_batch):
+            output = self.__forward(x_batch[i])
+            errors.append(self.__loss_prime(y_batch[i], output))
+        error = np.mean(errors, axis=0)
+        for layer in reversed(self.layers):
+            error = layer.backward(error)
 
     def train(self, x_train, y_train, epochs: int, batch_size: int = 16):
         if self.__loss is None or self.__loss_prime is None:
@@ -38,17 +41,17 @@ class NeuralNetwork:
 
         for epoch in tqdm.tqdm(range(epochs)):
             loss = []
-            for i in range(0, len(x_train), 1):
-                """x_batch = x_train[i:i + batch_size]
+            for i in range(0, len(x_train), 16): 
+                x_batch = x_train[i:i + batch_size]
                 y_batch = y_train[i:i + batch_size]
-                self.__train_batch(x_batch, y_batch, 0.1)
-                continue"""
-                output = self.__forward(x_train[i])
-                loss.append(self.__loss(y_train[i], output))
+                self.__train_batch(x_batch, y_batch, 0.01)
 
-                error = self.__loss_prime(y_train[i], output)
-                for layer in reversed(self.layers):
-                    error = layer.backward(error)
+                #output = self.__forward(x_train[i])
+                #loss.append(self.__loss(y_train[i], output))
+
+                #error = self.__loss_prime(y_train[i], output)
+                #for layer in reversed(self.layers):
+                #    error = layer.backward(error)
             loss = np.mean(loss)
             tqdm.tqdm.write(f'Epoch: {epoch}, Loss: {loss}')
 
