@@ -28,7 +28,6 @@ def parse_game(game):
 
     if board.is_checkmate():
         if no_checkmate == no_unit:
-            sys.stderr.write("Checkmate limit reached\n")
             return
         no_checkmate += 1
         fen += " Checkmate"
@@ -38,7 +37,6 @@ def parse_game(game):
             fen += " White"
     elif board.is_check():
         if no_check == no_unit:
-            sys.stderr.write("Check limit reached\n")
             return
         no_check += 1
         fen += " Check"
@@ -48,13 +46,11 @@ def parse_game(game):
             fen += " White"
     elif board.is_stalemate():
         if no_stalemate == no_unit:
-            sys.stderr.write("Stalemate limit reached\n")
             return
         no_stalemate += 1
         fen += " Stalemate"
     else:
         if no_nothing == no_unit:
-            sys.stderr.write("Nothing limit reached\n")
             return
         no_nothing += 1
         fen += " Nothing"

@@ -14,10 +14,10 @@ class NeuralNetwork:
         self.loss = None
         self.loss_prime = None
 
-    def __forward(self, input: list):
+    def __forward(self, input: list, training):
         output = input
         for layer in self.layers:
-            output = layer.forward(output)
+            output = layer.forward(output, training)
         return output
 
     def add_layer(self, layer: layer.Layer):
@@ -31,7 +31,7 @@ class NeuralNetwork:
         errors = []
         batch_loss = []
         for i, _ in enumerate(x_batch):
-            output = self.__forward(x_batch[i])
+            output = self.__forward(x_batch[i], True)
             batch_loss.append(self.__loss(y_batch[i], output))
             errors.append(self.__loss_prime(y_batch[i], output))
         error = np.mean(errors, axis=0)
@@ -52,22 +52,22 @@ class NeuralNetwork:
         for epoch in tqdm.tqdm(range(epochs)):
             loss = []
             x_train_epoch, y_train_epoch = self.__shuffle(x_train, y_train)
-            for i in range(0, len(x_train), batch_size): 
-                x_batch = x_train_epoch[i:i + batch_size]
-                y_batch = y_train_epoch[i:i + batch_size]
-                loss.append(self.__train_batch(x_batch, y_batch, 0.01))
+            for i in range(0, len(x_train), 1): 
+                #x_batch = x_train_epoch[i:i + batch_size]
+                #y_batch = y_train_epoch[i:i + batch_size]
+                #loss.append(self.__train_batch(x_batch, y_batch, 0.01))
 
-                """output = self.__forward(x_train[i])
-                loss.append(self.__loss(y_train[i], output))
+                output = self.__forward(x_train_epoch[i], True)
+                loss.append(self.__loss(y_train_epoch[i], output))
 
-                error = self.__loss_prime(y_train[i], output)
+                error = self.__loss_prime(y_train_epoch[i], output)
                 for layer in reversed(self.layers):
-                    error = layer.backward(error)"""
+                    error = layer.backward(error)
             loss = np.mean(loss)
             tqdm.tqdm.write(f'Epoch: {epoch}, Loss: {loss}')
 
     def predict(self, input: set):
-        return self.__forward(input)
+        return self.__forward(input, False)
 
     def save(self, filename: str):
         with open(filename, 'wb') as f:

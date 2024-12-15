@@ -49,6 +49,5 @@ activation_functions = {
     "sigmoid": sigmoid,
     "tanh": tanh,
     "relu": relu,
-    "linear": linear,
-    #"softmax": softmax
+    "linear": linear
 }

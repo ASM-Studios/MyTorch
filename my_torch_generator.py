@@ -29,7 +29,17 @@ def load_layer(data: json, nn: neural_network.NeuralNetwork) -> None:
         try:
             input_size = int(data['input_size'])
             output_size = int(data['output_size'])
-            nn.add_layer(layer.FCLayer(input_size, output_size))
+            nn.add_layer(layer.FullyConnectedLayer(input_size, output_size))
+        except ValueError:
+            print('Sizes must be of type int')
+            sys.exit(84)
+    elif data['type'] == 'dropout':
+        if data.get('rate') is None:
+            print('Invalid layer parameters')
+            sys.exit(84)
+        try:
+            rate = int(data['rate'])
+            nn.add_layer(layer.DropoutLayer(rate))
         except ValueError:
             print('Sizes must be of type int')
             sys.exit(84)

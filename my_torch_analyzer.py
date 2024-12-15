@@ -106,7 +106,7 @@ def get_input(chess_config: str) -> np.ndarray:
     matrix = get_plate(chess_config[0]).flatten()
     matrix = np.append(matrix, 1 if chess_config[1] == 'w' else 0)
     matrix = np.append(matrix, get_castling(chess_config[2]))
-    matrix = np.append(matrix, get_en_passant(chess_config[3]))
+    #matrix = np.append(matrix, get_en_passant(chess_config[3]))
     return np.array([matrix], dtype=float)
 
 def get_output(chess_config: str) -> np.ndarray:
@@ -129,7 +129,7 @@ def train(config: Config, nn: neural_network.NeuralNetwork):
             continue
         x_train.append(get_input(chess_config))
         y_train.append(get_output(chess_config))
-    nn.train(x_train, y_train, 25, 16)
+    nn.train(x_train, y_train, 2, 16)
 
 def predict(config: Config, nn:neural_network.NeuralNetwork):
     with open(config.cb_file, 'r') as f:
@@ -137,6 +137,7 @@ def predict(config: Config, nn:neural_network.NeuralNetwork):
     data = data.split('\n')
     for chess_config in data:
         if chess_config == '':
+            print('')
             continue
         index = np.argmax(nn.predict(get_input(chess_config)))
         print(list(result.keys())[index])
