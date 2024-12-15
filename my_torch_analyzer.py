@@ -59,9 +59,11 @@ pieces = {
 
 result = {
     'Nothing': 0,
-    'Check': 1,
-    'Checkmate': 2,
-    'Stalemate': 3
+    'Check White': 1,
+    'Check Black': 2,
+    'Checkmate White': 3,
+    'Checkmate Black': 4,
+    'Stalemate': 5
 }
 
 def get_plate(plate: str) -> np.ndarray:
@@ -108,8 +110,12 @@ def get_input(chess_config: str) -> np.ndarray:
     return np.array([matrix], dtype=float)
 
 def get_output(chess_config: str) -> np.ndarray:
-    y = np.zeros(4, dtype=float)
-    y[result[chess_config.split(' ')[6]]] = 1
+    y = np.zeros(6, dtype=float)
+    array = chess_config.split(' ')
+    if array[6] == 'Check' or array[6] == 'Checkmate':
+        y[result[array[6] + ' ' + array[7]]] = 1
+    else:
+        y[result[chess_config.split(' ')[6]]] = 1
     return np.array([y], dtype=float)
 
 def train(config: Config, nn: neural_network.NeuralNetwork):
@@ -118,12 +124,12 @@ def train(config: Config, nn: neural_network.NeuralNetwork):
     data = data.split('\n')
     x_train = []
     y_train = []
-    for chess_config in data:
+    for i, chess_config in enumerate(data):
         if chess_config == '':
             continue
         x_train.append(get_input(chess_config))
         y_train.append(get_output(chess_config))
-    nn.train(x_train, y_train, 25, 1)
+    nn.train(x_train, y_train, 25, 16)
 
 def predict(config: Config, nn:neural_network.NeuralNetwork):
     with open(config.cb_file, 'r') as f:

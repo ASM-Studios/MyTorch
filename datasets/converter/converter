@@ -1,0 +1,69 @@
+#!/usr/bin/env python3
+import chess.pgn
+import chess
+import sys
+
+try:
+    pgn = open(sys.argv[1])
+    no_unit = int(sys.argv[2])
+except IndexError:
+    print(f'Usage: {sys.argv[0]} <pgn file> <number of each type of game>')
+    sys.exit(84)
+
+no_nothing = 0
+no_check = 0
+no_checkmate = 0
+no_stalemate = 0
+
+def parse_game(game):
+    global no_nothing
+    global no_check
+    global no_checkmate
+    global no_stalemate
+    board = game.board()
+    for move in game.mainline_moves():
+        board.push(move)
+    
+    fen = board.fen()
+
+    if board.is_checkmate():
+        if no_checkmate == no_unit:
+            sys.stderr.write("Checkmate limit reached\n")
+            return
+        no_checkmate += 1
+        fen += " Checkmate"
+        if board.turn == chess.WHITE:
+            fen += " Black"
+        else:
+            fen += " White"
+    elif board.is_check():
+        if no_check == no_unit:
+            sys.stderr.write("Check limit reached\n")
+            return
+        no_check += 1
+        fen += " Check"
+        if board.turn == chess.WHITE:
+            fen += " Black"
+        else:
+            fen += " White"
+    elif board.is_stalemate():
+        if no_stalemate == no_unit:
+            sys.stderr.write("Stalemate limit reached\n")
+            return
+        no_stalemate += 1
+        fen += " Stalemate"
+    else:
+        if no_nothing == no_unit:
+            sys.stderr.write("Nothing limit reached\n")
+            return
+        no_nothing += 1
+        fen += " Nothing"
+    print(fen)
+
+while True:
+    game = chess.pgn.read_game(pgn)
+    if game is None:
+        break
+    if no_nothing == no_unit and no_check == no_unit and no_checkmate == no_unit and no_stalemate == no_unit:
+        break
+    parse_game(game)

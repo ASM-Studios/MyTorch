@@ -39,23 +39,30 @@ class NeuralNetwork:
             error = layer.backward(error)
         return np.mean(batch_loss)
 
+    def __shuffle(self, x_train, y_train):
+        zipped = list(zip(x_train, y_train))
+        random.shuffle(zipped)
+        x_train, y_train = zip(*zipped)
+        return np.array(x_train), np.array(y_train)
+
     def train(self, x_train, y_train, epochs: int, batch_size: int = 16):
         if self.__loss is None or self.__loss_prime is None:
             raise NotImplementedError
 
         for epoch in tqdm.tqdm(range(epochs)):
             loss = []
+            x_train_epoch, y_train_epoch = self.__shuffle(x_train, y_train)
             for i in range(0, len(x_train), batch_size): 
-                x_batch = x_train[i:i + batch_size]
-                y_batch = y_train[i:i + batch_size]
+                x_batch = x_train_epoch[i:i + batch_size]
+                y_batch = y_train_epoch[i:i + batch_size]
                 loss.append(self.__train_batch(x_batch, y_batch, 0.01))
 
-                #output = self.__forward(x_train[i])
-                #loss.append(self.__loss(y_train[i], output))
+                """output = self.__forward(x_train[i])
+                loss.append(self.__loss(y_train[i], output))
 
-                #error = self.__loss_prime(y_train[i], output)
-                #for layer in reversed(self.layers):
-                #    error = layer.backward(error)
+                error = self.__loss_prime(y_train[i], output)
+                for layer in reversed(self.layers):
+                    error = layer.backward(error)"""
             loss = np.mean(loss)
             tqdm.tqdm.write(f'Epoch: {epoch}, Loss: {loss}')
 
