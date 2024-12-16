@@ -1,7 +1,7 @@
-medium tres bon
+medium tres bon ~65%
 medium_2 moyen
 medium_3 moyen
 medium_4 assez bon
 medium_5 moyen
-medium_6 - 25 epoch + dropout correct: - tres bon sauf sur checkmate 
-medium_7 - 25 epoch + dropout correct: - 
+medium_7 - 25 epoch + dropout (default) correct: - tres bon ~60%
+medium_8 - 25 epoch + dropout (0.5) correct: - 65%
