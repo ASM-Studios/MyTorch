@@ -129,7 +129,7 @@ def train(config: Config, nn: neural_network.NeuralNetwork):
             continue
         x_train.append(get_input(chess_config))
         y_train.append(get_output(chess_config))
-    nn.train(x_train, y_train, 20, 16)
+    nn.train(x_train, y_train, 25, 16)
 
 def predict(config: Config, nn:neural_network.NeuralNetwork):
     with open(config.cb_file, 'r') as f:

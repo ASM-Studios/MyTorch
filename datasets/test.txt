@@ -1,4 +1,10 @@
-6k1/p3b1p1/1p2Q2p/3p4/3P4/1Pr2NP1/P4P2/R3K3 b - - 0 25 Check White
+rnb1kbnr/pppp1ppp/8/4p3/6Pq/5P2/PPPPP2P/RNBQKBNR w KQkq - 1 3
+rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1
+rnbqkbnr/pppppppp/8/8/3P4/8/PPP1PPPP/RNBQKBNR b KQkq d3 0 1
+rnbqkbnr/pppp2pp/8/4pp1Q/3P4/4P3/PPP2PPP/RNB1KBNR b KQkq - 1 3
+8/8/8/8/8/8/8/k1K5 w - - 0 1
+
+6k1/p3b1p1/1p2Q2p/3p4/3P4/1Pr2NP1/P4P2/R3K3 b - - 0 25
 r4rk1/pp4pp/1b6/3pP3/PP1p2bq/3P4/2NQ2P1/R1B3RK w - - 1 22 Checkmate Black
 rnbqk3/ppppbp2/7r/4Q3/4BP2/4P3/PPPP2PP/RNB1K1NR b KQq - 0 13 Nothing
 4k2r/1p3Q2/7p/qn2Pbp1/8/PBP3BP/1P4P1/K2R4 b k - 0 29 Checkmate White

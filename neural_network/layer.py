@@ -45,8 +45,6 @@ class DropoutLayer(Layer):
         return input
 
     def backward(self, output_error):
-        if self.filter is None:
-            return output_error
         return output_error * self.filter
 
 class ActivationLayer(Layer):
