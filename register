@@ -1,1 +1,2 @@
 my_torch_network_full_1 - 25 epoch - dropout 0.3 -> 0.2 => ~75%
+my_torch_network_full_2 - 25 epoch - dropout 0.4 -> 0.3 => waiting
